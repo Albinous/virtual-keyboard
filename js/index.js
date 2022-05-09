@@ -22,15 +22,18 @@ class KeyName {
     }
 }
 
-let keys = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', 'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'Del', 'Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '"', 'Enter', 'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '&#9650', 'Shift2', 'Ctrl', 'Win', 'Alt', '', 'Alt2', 'Fn', '&#5130', '&#9660', '&#5125', 'Ctrl2'];
+let keys = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', 'Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del', 'Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '"', 'Enter', 'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '&#9650', 'Shift2', 'Ctrl', 'Win', 'Alt', 'Space', 'Alt2', '&#5130', '&#9660', '&#5125', 'Ctrl2'];
+
+let keysRu = ['ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', 'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', '[', ']', '\\', 'Del', 'Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '"', 'Enter', 'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '&#9650', 'Shift2', 'Ctrl', 'Win', 'Alt', 'Space', 'Alt2', '&#5130', '&#9660', '&#5125', 'Ctrl2'];
 
 for (let i = 0; i < keys.length; i += 1) {
     item = document.createElement('div');
     let keyDetails = new KeyName(keys[i]);
     item.classList.add(keyDetails.className);
     item.innerHTML = keyDetails.key;
-    item.setAttribute('keyName', item.innerHTML);
+    item.setAttribute('keyName', item.innerHTML.toUpperCase());
     item.setAttribute('lowerName', item.innerHTML.toLowerCase());
+
     keysArr.push(item);
     row.append(item);
     if (keys[i] === 'Backspace') {
@@ -92,51 +95,149 @@ function longKey(key) {
 
 const keyDownEvent = (e) => {
     for (let i = 0; i < keysArr.length; i++) {
-        if (e.key == keysArr[i].getAttribute('keyName') || e.key == keysArr[i].getAttribute('lowerName')) {
+        if (e.key == keysArr[i].getAttribute('keyName') || e.key == keysArr[i].getAttribute('lowerName') || e.code == keysArr[i].innerHTML) {
             keysArr[i].classList.add('active');
             keysArr[i].classList.remove('remove');
+            console.log(e.key)
         }
 
         console.log(e.code);
 
-        if (e.code == 'Space' && keysArr[i].classList.contains('space-key')) {
+        if (e.code == 'ShiftLeft' && keysArr[i].classList.contains('shift-left') || e.code == 'ShiftRight' && keysArr[i].classList.contains('shift-right')) {
             keysArr[i].classList.add('active');
-            keysArr[i].classList.remove('remove');
         }
 
-        if (e.code == 'ShiftLeft' && keysArr[i].classList.contains('shift-right')) {
-            keysArr[i].classList.remove('active');
+        if (e.code == 'ControlLeft' && keysArr[i].classList.contains('ctrl-left') || e.code == 'ControlRight' && keysArr[i].classList.contains('ctrl-right')) {
+            keysArr[i].classList.add('active');
         }
 
-        if (e.code == 'ShiftRight' && keysArr[i].classList.contains('shift-left')) {
-            keysArr[i].classList.remove('active');
+        if (e.code == 'AltLeft' && keysArr[i].classList.contains('alt-left') || e.code == 'AltRight' && keysArr[i].classList.contains('alt-right')) {
+            keysArr[i].classList.add('active');
         }
+
+        
+        if (e.code == 'MetaLeft' && keysArr[i].classList.contains('win-key')) {
+            keysArr[i].classList.add('active');
+        }
+
+        let value = keysArr[i].innerHTML
 
         if (e.code == 'CapsLock' && keysArr[i].classList.contains('capslock-key')) {
             keysArr[i].classList.toggle('active');
+            value = value.toUpperCase();
+        }
+
+    }
+    if (e.ctrlKey && e.altKey) {
+        for (let i = 0; i < keysArr.length; i++) {
+            if (keysArr[i].innerHTML == keys[i]) {
+                keysArr[i].innerHTML = keysRu[i]
+            } else {
+                
+            }
         }
     }
 }
 
 const keyUpEvent = (e) => {
     for (let i = 0; i < keysArr.length; i++) {
-        if (e.key == keysArr[i].getAttribute('keyName') || e.key == keysArr[i].getAttribute('lowerName')) {
+        if (e.key == keysArr[i].getAttribute('keyName') || e.key == keysArr[i].getAttribute('lowerName') || e.code == keysArr[i].innerHTML) {
             keysArr[i].classList.remove('active');
-            keysArr[i].classList.add('remove');
+            keysArr[i].classList.remove('remove');
         }
         
-        if (e.code == 'Space' && keysArr[i].classList.contains('space-key')) {
+        if (e.code == 'ShiftLeft' && keysArr[i].classList.contains('shift-left') || e.code == 'ShiftRight' && keysArr[i].classList.contains('shift-right')) {
             keysArr[i].classList.remove('active');
-            keysArr[i].classList.add('remove');
         }
+
+        if (e.code == 'ControlLeft' && keysArr[i].classList.contains('ctrl-left') || e.code == 'ControlRight' && keysArr[i].classList.contains('ctrl-right')) {
+            keysArr[i].classList.remove('active');
+        }
+
+        if (e.code == 'AltLeft' && keysArr[i].classList.contains('alt-left') || e.code == 'AltRight' && keysArr[i].classList.contains('alt-right')) {
+            keysArr[i].classList.remove('active');
+        }
+
+        
+        if (e.code == 'MetaLeft' && keysArr[i].classList.contains('win-key')) {
+            keysArr[i].classList.remove('active');
+        }
+
     }
 }
 
-window.addEventListener('keydown', keyDownEvent);
-window.addEventListener('keyup', keyUpEvent);
+const isCapsLock = () => {
+    if (keysArr[29].classList.contains('active')) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-console.log(keysArr);
-    
+let counter = 0;
+
+keysArr.forEach(key => {
+    key.addEventListener('mousedown', () => {
+        key.classList.add('active');
+    });
+    key.addEventListener('mouseup', () => {
+        key.classList.remove('active');
+    });
+    key.addEventListener('keydown', () => {
+        key.classList.add('active');
+    });
+    key.addEventListener('keyup', () => {
+        key.classList.remove('active');
+    });
+    key.addEventListener('click', () => {
+        let value = key.innerHTML
+        switch(value) {
+            case 'Backspace':
+                value = TEXTAREA_INPUT.value.substring(0, TEXTAREA_INPUT.value.length - 1);
+                TEXTAREA_INPUT.value = value;
+
+                break;
+            case 'Caps Lock':
+                counter++;
+                if (counter % 2 !== 0) {
+                    key.classList.add('active');
+                } else {
+                    key.classList.remove('active');
+                }
+                value = '';
+                TEXTAREA_INPUT.value += value;
+                console.log(value)
+
+                break;
+
+            case 'Enter':
+                value = '\n';
+                TEXTAREA_INPUT.value += value;
+
+                break;
+            case 'Space':
+                value = ' ';
+                TEXTAREA_INPUT.value += value;
+
+                break;
+            case 'Tab':
+                value = '    ';
+                TEXTAREA_INPUT.value += value;
+
+                break;
+            default:
+                value = key.getAttribute('lowername');
+
+                value = isCapsLock() ? key.getAttribute('keyname') : key.getAttribute('lowername');
+                TEXTAREA_INPUT.value += value;
+
+                console.log(TEXTAREA_INPUT.value)
+
+                break;
+        }
+
+    })
+});
 
 
 CONTAINER.classList.add('container');
@@ -149,3 +250,11 @@ BODY.append(CONTAINER);
 CONTAINER.append(TEXTAREA_INPUT);
 CONTAINER.append(KEYBOARD);
 KEYBOARD.append(keyboardKeys);
+
+window.addEventListener('keydown', keyDownEvent);
+window.addEventListener('keyup', keyUpEvent);
+// keyboardKeys.addEventListener('mousedown', mouseDown);
+// window.addEventListener('mouseup', mouseUp);
+
+console.log(keysArr);
+    
