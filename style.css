@@ -47,6 +47,7 @@ textarea {
     align-items: center;
     margin: 4px;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .backspace-key, .enter-key {
@@ -70,8 +71,9 @@ textarea {
 }
 
 .space-key {
-    max-width: 388px;
+    max-width: 454px;
     width: 100%;
+    color: #fff;
 }
 
 .keys.active {

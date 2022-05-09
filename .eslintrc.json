@@ -11,5 +11,6 @@
     },
     "rules": {
         "indent": ["error", 3],
+        "allowForLoopAfterthoughts": true
     }
 }
